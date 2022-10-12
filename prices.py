@@ -1,6 +1,7 @@
 import time
 import json
 import numpy as np
+from time_data import *
 from plot import *
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
@@ -15,10 +16,10 @@ html = data['results_html']
 
 soup = BeautifulSoup(html, 'html.parser')
 
-#print(soup.prettify())
 objects = soup.findAll(class_="market_listing_row_link")
 
 data = []
+history = {}
 
 for g in objects:
     link = g["href"]
@@ -26,7 +27,6 @@ for g in objects:
     price = g.find('span', {'data-price': True}).text
     if (link[-4::] == 'Case' or link[-1].isdigit()):
     	data.append((price, case_name))
-
 
 size = len(data)
 
@@ -37,4 +37,5 @@ for i in range(size):
 	prices[i] = data[i][0].strip('$')
 	cases[i] = data[i][1]
 
+print(mdy)
 displayPlot(cases, prices)
